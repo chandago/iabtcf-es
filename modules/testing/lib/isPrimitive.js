@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.isPrimitive=function(e){var r=typeof e;return"number"===r||"string"===r||"boolean"===r};
