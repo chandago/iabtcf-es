@@ -24,7 +24,12 @@ export class CallResponder {
 
   public constructor(customCommands?: CustomCommands) {
 
-    this.customCommands = customCommands;
+    if (customCommands) {
+
+      this.customCommands = {};
+      this.populateCustomCommands(customCommands);
+
+    }
 
     /**
      * Attempt to grab the queue – we could call ping and see if it is the stub,
@@ -145,6 +150,32 @@ export class CallResponder {
     });
 
   }
+
+  /**
+   * Allow user to wrap built-in commands with custom ones
+   * @param  {CustomCommands} customCommands?
+   */
+  private populateCustomCommands(customCommands?: CustomCommands): void {
+
+    Object.keys(customCommands || {}).forEach((customCommand) => {
+
+      if (Object.values(TCFCommands).includes(customCommand)) {
+
+        this.customCommands[customCommand] = function(...args): any {
+
+          return customCommands[customCommand](new CommandMap[customCommand](...args));
+
+        };
+
+      } else {
+
+        this.customCommands[customCommand] = customCommands[customCommand];
+
+      }
+
+    });
+
+  };
 
   /**
    * Checks to see if the command exists in either the set of TCF Commands or
