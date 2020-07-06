@@ -163,7 +163,7 @@ export class CallResponder {
 
         this.customCommands[customCommand] = function(...args): any {
 
-          return customCommands[customCommand](new CommandMap[customCommand](...args));
+          return customCommands[customCommand](CommandMap[customCommand], ...args);
 
         };
 
